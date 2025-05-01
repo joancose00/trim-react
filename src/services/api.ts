@@ -68,17 +68,26 @@ export const getHoldings = async (address: string): Promise<TokenHolding[]> => {
         const ca = token.token_address;
         const holding = token.amount;
 
+        console.log(`Processing token ${ca}...`);
+        
         const metaUrl = `https://pro-api.solscan.io/v2.0/token/meta?address=${ca}`;
         const metaResponse = await axios.get(metaUrl, { headers });
 
         const data = metaResponse.data;
         const supply = data.data.supply;
         const percentage = parseInt(holding) / parseInt(supply);
-        const metadata = data.data.metadata;
-        metadata.address = ca; // Add the contract address to metadata
+        
+        // Create metadata object from direct fields, with optional description from metadata
+        const metadata = {
+          name: data.data.name,
+          symbol: data.data.symbol,
+          image: data.data.icon,
+          description: data.data.metadata?.description || '',
+          address: ca
+        };
 
         // Log metadata for debugging
-        if (metadata && metadata.image) {
+        if (metadata.image) {
           console.log(`Token ${ca} image URL:`, metadata.image);
         }
 
@@ -91,11 +100,22 @@ export const getHoldings = async (address: string): Promise<TokenHolding[]> => {
           token_address: ca
         });
       } catch (error) {
+        console.error(`Failed to process token ${token.token_address}:`, error);
+        if (axios.isAxiosError(error)) {
+          console.error('API Error Details:', {
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data
+          });
+        }
         // Continue with next token even if this one fails
       }
     }
 
     console.log(`Successfully processed ${output.length} out of ${allTokens.length} tokens`);
+    if (output.length < allTokens.length) {
+      console.log('Failed tokens:', allTokens.length - output.length);
+    }
 
     // Sort holdings by percentage in descending order
     return output.sort((a, b) => b.percentage - a.percentage);

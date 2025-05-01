@@ -69,7 +69,11 @@ const ResultsPage: React.FC = () => {
 
   return (
     <div className="container">
-      <h1>Holdings for {address}</h1>
+      <h1>
+        Holdings for
+        <br />
+        <span className="address-title">{address}</span>
+      </h1>
 
       <div className="results-container">
         {holdings.length > 0 ? (
@@ -131,7 +135,7 @@ const ResultsPage: React.FC = () => {
               };
 
               return (
-                <div key={index} className="holding-item">
+                <div key={index} className="token-card">
                   <div className="token-image-container">
                     <div className="image-loading"></div>
                     <img 
@@ -148,7 +152,6 @@ const ResultsPage: React.FC = () => {
                         const currentSrc = e.currentTarget.src;
                         let hash = '';
                         
-                        // Improved IPFS hash extraction
                         if (currentSrc.includes('/ipfs/')) {
                           hash = currentSrc.split('/ipfs/')[1];
                         } else if (currentSrc.match(/Qm[1-9A-Za-z]{44,}/)) {
@@ -156,7 +159,6 @@ const ResultsPage: React.FC = () => {
                           if (match) hash = match[0];
                         }
                         
-                        // Try next gateway if available
                         if (hash) {
                           const gateways = [
                             'https://ipfs.io/ipfs/',
@@ -165,7 +167,6 @@ const ResultsPage: React.FC = () => {
                             'https://cloudflare-ipfs.com/ipfs/'
                           ];
                           
-                          // More robust gateway detection
                           let currentIndex = -1;
                           
                           for (let i = 0; i < gateways.length; i++) {
@@ -175,18 +176,15 @@ const ResultsPage: React.FC = () => {
                             }
                           }
                           
-                          // If we found the current gateway and there are more to try
                           if (currentIndex >= 0 && currentIndex < gateways.length - 1) {
                             e.currentTarget.src = gateways[currentIndex + 1] + hash;
                             return;
                           } else if (currentIndex === -1) {
-                            // If we couldn't determine the current gateway, try the first one
                             e.currentTarget.src = gateways[0] + hash;
                             return;
                           }
                         }
                         
-                        // If all gateways failed or not an IPFS URL, use fallback
                         e.currentTarget.src = '/logo192.png';
                         e.currentTarget.classList.add('error');
                         e.currentTarget.parentElement?.querySelector('.image-loading')?.classList.add('hidden');
@@ -196,6 +194,12 @@ const ResultsPage: React.FC = () => {
                   <div className="token-info">
                     <div className="token-name">{token.metadata?.name || 'Unknown Token'}</div>
                     <div className="token-symbol">{token.metadata?.symbol || '-'}</div>
+                    {token.percentage > 0.01 && (
+                      <div className="trim-warning">
+                        <span className="warning-icon">⚠️</span>
+                        WALLET MUST TRIM
+                      </div>
+                    )}
                     {token.metadata?.description && (
                       <div className="token-description">{token.metadata.description}</div>
                     )}
@@ -203,7 +207,10 @@ const ResultsPage: React.FC = () => {
                       <div>
                         <span className="detail-label">Amount Held:</span>
                         <span className="detail-value">
-                          {(token.holding / (10 ** token.decimals)).toFixed(2)}
+                          {(token.holding / (10 ** token.decimals)).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                          })}
                         </span>
                       </div>
                       <div>
@@ -215,13 +222,16 @@ const ResultsPage: React.FC = () => {
                       <div>
                         <span className="detail-label">Total Supply:</span>
                         <span className="detail-value">
-                          {(token.supply / (10 ** token.decimals)).toFixed(2)}
+                          {(token.supply / (10 ** token.decimals)).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                          })}
                         </span>
                       </div>
                       <div>
                         <span className="detail-label">Contract Address:</span>
                         <span className="detail-value contract-address">
-                          {token.metadata?.address || token.token_address || 'N/A'}
+                          {token.token_address}
                         </span>
                       </div>
                     </div>
