@@ -1,46 +1,61 @@
-# Getting Started with Create React App
+# Solana Wallet Holdings Viewer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This React application allows you to view the token holdings of any Solana wallet address. The app displays detailed information about each token, including the percentage of the total supply held.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Look up token holdings for any Solana wallet address
+- Display token metadata, including name, symbol, and images
+- Show percentage of total supply, amount held, and total supply for each token
+- Sort tokens by percentage of total supply in descending order
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Before running this application, make sure you have:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js (v14 or newer)
+- npm or yarn
+- Solscan API key
 
-### `npm test`
+## Environment Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create a `.env.local` file in the root directory with the following content:
 
-### `npm run build`
+```
+REACT_APP_SOLSCAN_API_KEY=your_solscan_api_key_here
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the repository
+2. Install dependencies:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+```
 
-### `npm run eject`
+3. Start the development server:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+npm start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Building for Production
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+To build the app for production, run:
 
-## Learn More
+```bash
+npm run build
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The build artifacts will be stored in the `build/` directory.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Technologies Used
+
+- React
+- TypeScript
+- React Router
+- Axios for API requests
+- Solscan API for fetching wallet data
