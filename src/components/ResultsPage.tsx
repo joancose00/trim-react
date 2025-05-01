@@ -218,6 +218,12 @@ const ResultsPage: React.FC = () => {
                           {(token.supply / (10 ** token.decimals)).toFixed(2)}
                         </span>
                       </div>
+                      <div>
+                        <span className="detail-label">Contract Address:</span>
+                        <span className="detail-value contract-address">
+                          {token.metadata?.address || token.token_address || 'N/A'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

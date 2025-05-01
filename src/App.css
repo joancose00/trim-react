@@ -223,3 +223,10 @@ button:disabled {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.contract-address {
+  font-family: monospace;
+  font-size: 0.9em;
+  word-break: break-all;
+  color: #666;
+}

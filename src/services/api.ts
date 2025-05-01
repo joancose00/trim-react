@@ -17,6 +17,7 @@ export interface TokenMetadata {
   symbol: string;
   image: string;
   description?: string;
+  address: string;
 }
 
 export interface TokenHolding {
@@ -25,6 +26,7 @@ export interface TokenHolding {
   percentage: number;
   supply: number;
   decimals: number;
+  token_address: string;
 }
 
 export const getHoldings = async (address: string): Promise<TokenHolding[]> => {
@@ -73,6 +75,7 @@ export const getHoldings = async (address: string): Promise<TokenHolding[]> => {
         const supply = data.data.supply;
         const percentage = parseInt(holding) / parseInt(supply);
         const metadata = data.data.metadata;
+        metadata.address = ca; // Add the contract address to metadata
 
         // Log metadata for debugging
         if (metadata && metadata.image) {
@@ -84,7 +87,8 @@ export const getHoldings = async (address: string): Promise<TokenHolding[]> => {
           holding: parseInt(holding),
           percentage,
           supply: parseInt(supply),
-          decimals: parseInt(token.token_decimals)
+          decimals: parseInt(token.token_decimals),
+          token_address: ca
         });
       } catch (error) {
         // Continue with next token even if this one fails
