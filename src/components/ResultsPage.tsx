@@ -12,6 +12,9 @@ const ResultsPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Temporary debug code
+        console.log('API Key in production:', process.env.REACT_APP_SOLSCAN_API_KEY ? 'Available' : 'Not available');
+        
         if (!address) {
           setError('No address provided');
           setLoading(false);

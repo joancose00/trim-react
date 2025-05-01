@@ -7,6 +7,11 @@ import axios from 'axios';
 // Fallback to hardcoded API key if environment variable is not available
 const SOLSCAN_API_KEY = process.env.REACT_APP_SOLSCAN_API_KEY;
 
+// Debug API key (only in development)
+if (process.env.NODE_ENV === 'development') {
+  console.log('API Key available:', !!SOLSCAN_API_KEY);
+}
+
 export interface TokenMetadata {
   name: string;
   symbol: string;
@@ -29,7 +34,8 @@ export const getHoldings = async (address: string): Promise<TokenHolding[]> => {
     // Configure headers as per Solscan API requirements
     const headers = {
       'accept': 'application/json',
-      'token': SOLSCAN_API_KEY // Using 'token' header as per the original Python code
+      'Authorization': `Bearer ${SOLSCAN_API_KEY}`,
+      'token': SOLSCAN_API_KEY // Keeping both for compatibility
     };
 
     // Fetch token accounts for the wallet address
