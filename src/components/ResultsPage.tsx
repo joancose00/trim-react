@@ -148,7 +148,6 @@ const ResultsPage: React.FC = () => {
                         if (currentSrc.includes('/ipfs/')) {
                           hash = currentSrc.split('/ipfs/')[1];
                         } else if (currentSrc.match(/Qm[1-9A-Za-z]{44,}/)) {
-                          // If the URL itself is just a hash
                           const match = currentSrc.match(/Qm[1-9A-Za-z]{44,}/);
                           if (match) hash = match[0];
                         }
@@ -163,12 +162,10 @@ const ResultsPage: React.FC = () => {
                           ];
                           
                           // More robust gateway detection
-                          let currentGateway = '';
                           let currentIndex = -1;
                           
                           for (let i = 0; i < gateways.length; i++) {
                             if (currentSrc.startsWith(gateways[i])) {
-                              currentGateway = gateways[i];
                               currentIndex = i;
                               break;
                             }
@@ -176,19 +173,16 @@ const ResultsPage: React.FC = () => {
                           
                           // If we found the current gateway and there are more to try
                           if (currentIndex >= 0 && currentIndex < gateways.length - 1) {
-                            console.log(`Trying next gateway for hash ${hash}`);
                             e.currentTarget.src = gateways[currentIndex + 1] + hash;
                             return;
                           } else if (currentIndex === -1) {
                             // If we couldn't determine the current gateway, try the first one
-                            console.log(`Trying first gateway for hash ${hash}`);
                             e.currentTarget.src = gateways[0] + hash;
                             return;
                           }
                         }
                         
                         // If all gateways failed or not an IPFS URL, use fallback
-                        console.log(`Image load failed for ${currentSrc}, using fallback`);
                         e.currentTarget.src = '/logo192.png';
                         e.currentTarget.classList.add('error');
                       }}
