@@ -142,6 +142,7 @@ const ResultsPage: React.FC = () => {
                       onLoad={(e) => {
                         e.currentTarget.classList.add('loaded');
                         e.currentTarget.classList.remove('error');
+                        e.currentTarget.parentElement?.querySelector('.image-loading')?.classList.add('hidden');
                       }}
                       onError={(e) => {
                         const currentSrc = e.currentTarget.src;
@@ -188,6 +189,7 @@ const ResultsPage: React.FC = () => {
                         // If all gateways failed or not an IPFS URL, use fallback
                         e.currentTarget.src = '/logo192.png';
                         e.currentTarget.classList.add('error');
+                        e.currentTarget.parentElement?.querySelector('.image-loading')?.classList.add('hidden');
                       }}
                     />
                   </div>
