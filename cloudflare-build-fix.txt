@@ -1,3 +1,13 @@
+# Cloudflare Pages Build Optimization
+
+## Problems to Fix:
+1. React 19 is very new and may not be fully compatible with some dependencies
+2. Testing libraries version mismatches 
+3. Possible TypeScript compatibility issues
+
+## Recommended Changes for package.json:
+
+```json
 {
   "name": "trim-react",
   "version": "0.1.0",
@@ -44,3 +54,25 @@
     ]
   }
 }
+```
+
+## Additional Configuration for Cloudflare Pages:
+
+Create a `_headers` file in the public folder:
+
+```
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+```
+
+Create a `_redirects` file in the public folder:
+
+```
+/* /index.html 200
+```
+
+## Environment Variables:
+
+In Cloudflare Pages dashboard, add:
+- `NODE_VERSION`: 18.12.0
+- `NPM_VERSION`: 8.19.2
